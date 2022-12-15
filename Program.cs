@@ -86,6 +86,11 @@ namespace Tail {
 									break;
 							}
 							try {
+								if (filter.Contains("!")) {
+									lastMaxOffset = 0;
+									filter = filter.Replace("!", "");
+									Console.Clear();
+								}
 								filterRegEx = new Regex(filter);
 							} catch { }
 						}
@@ -96,11 +101,11 @@ namespace Tail {
 								if (filter == "") {
 									Console.Write(newText);
 								} else {
-									var lines = newText.Split('\n');
+									var lines = newText.Split(new char[] { '\n', '\r' });
 									try {
 										foreach (var line in lines) {
 											if (filterRegEx.Match(line) != Match.Empty) {
-												Console.Write(newText);
+												Console.WriteLine(line);
 											}
 										}
 									} catch { }
