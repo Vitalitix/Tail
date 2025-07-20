@@ -5,6 +5,7 @@ using System.Threading;
 
 namespace Tail {
 	class Program {
+		static readonly string reloadChar = "~";
 		static long lastMaxOffset = 0;
 		static string filter = "";
 		static Regex filterRegEx = new Regex(filter);
@@ -86,9 +87,9 @@ namespace Tail {
 									break;
 							}
 							try {
-								if (filter.Contains("!")) {
+								if (filter.Contains(reloadChar)) {
 									lastMaxOffset = 0;
-									filter = filter.Replace("!", "");
+									filter = filter.Replace(reloadChar, "");
 									Console.Clear();
 								}
 								filterRegEx = new Regex(filter);
@@ -114,7 +115,7 @@ namespace Tail {
 								lastUpdate = DateTime.Now;
 							} else {
 								int seconds = (int)(DateTime.Now - lastUpdate).TotalSeconds;
-								Console.Title = $"{args[0]}, Last update: {seconds / 60: 00}:{seconds % 60: 00}, Filter: {filter}";
+								Console.Title = $"{args[0]}, Last update: {seconds / 60:00}:{seconds % 60:00}, Filter: {filter}";
 							}
 						} catch (Exception e) {
 							Console.WriteLine(e.Message);
